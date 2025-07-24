@@ -1,76 +1,47 @@
 import React, { useState, useEffect } from 'react';
+import logo from './logo.svg';
 import './App.css';
-import GameBoard from './components/GameBoard';
-import Controls from './components/Controls';
-import { calculateWinner, getAIMove } from './utils/gameUtils';
 
+// PUBLIC_INTERFACE
 function App() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [isXNext, setIsXNext] = useState(true);
-  const [gameMode, setGameMode] = useState('PVP'); // 'PVP' or 'AI'
-  const [winner, setWinner] = useState(null);
+  const [theme, setTheme] = useState('light');
 
+  // Effect to apply theme to document element
   useEffect(() => {
-    const gameWinner = calculateWinner(squares);
-    if (gameWinner) {
-      setWinner(gameWinner);
-    } else if (gameMode === 'AI' && !isXNext && !gameWinner) {
-      // AI's turn
-      const timer = setTimeout(() => {
-        const aiMove = getAIMove(squares);
-        if (aiMove !== null) {
-          handleSquareClick(aiMove);
-        }
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, [squares, isXNext, gameMode]);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
-  const handleSquareClick = (index) => {
-    if (squares[index] || winner) return;
-
-    const newSquares = squares.slice();
-    newSquares[index] = isXNext ? 'X' : 'O';
-    setSquares(newSquares);
-    setIsXNext(!isXNext);
-  };
-
-  const handleNewGame = () => {
-    setSquares(Array(9).fill(null));
-    setIsXNext(true);
-    setWinner(null);
-  };
-
-  const handleModeChange = (newMode) => {
-    setGameMode(newMode);
-    handleNewGame();
-  };
-
-  const getGameStatus = () => {
-    if (winner === 'draw') {
-      return "It's a draw!";
-    } else if (winner) {
-      return `Winner: ${winner}`;
-    } else {
-      return `Next player: ${isXNext ? 'X' : 'O'}${gameMode === 'AI' && !isXNext ? ' (AI)' : ''}`;
-    }
+  // PUBLIC_INTERFACE
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
 
   return (
     <div className="App">
-      <div className="game-container">
-        <h1>Tic Tac Toe</h1>
-        <div className="game-status">{getGameStatus()}</div>
-        <GameBoard 
-          squares={squares}
-          onSquareClick={handleSquareClick}
-        />
-        <Controls
-          onNewGame={handleNewGame}
-          onModeChange={handleModeChange}
-          currentMode={gameMode}
-        />
-      </div>
+      <header className="App-header">
+        <button 
+          className="theme-toggle" 
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+        >
+          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+        </button>
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <p>
+          Current theme: <strong>{theme}</strong>
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
     </div>
   );
 }
