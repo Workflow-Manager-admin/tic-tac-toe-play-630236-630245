@@ -12,7 +12,7 @@
 =======
 >>>>>>> parent of 5235e69c (CheckPoint - cgd7f57d96)
   /* Light theme colors */
-  --bg-primary: #ffffff;
+  --bg-primary: #FFFF00;
   --bg-secondary: #f8f9fa;
   --text-primary: #282c34;
   --text-secondary: #61dafb;
@@ -27,7 +27,7 @@
 
 [data-theme="dark"] {
   /* Dark theme colors */
-  --bg-primary: #1a1a1a;
+  --bg-primary: #FFFF00;
   --bg-secondary: #282c34;
   --text-primary: #ffffff;
   --text-secondary: #61dafb;
